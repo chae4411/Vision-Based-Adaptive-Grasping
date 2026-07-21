@@ -1,4 +1,4 @@
-###### **Vision-Based Adaptive Grasping** 
+###### **Vision-Based Adaptive Grasping**
 
 A real-time computer vision system that analyzes segmented objects and estimates suitable grasp strategies and grasp points based on their geometric features.
 
@@ -20,7 +20,7 @@ Camera Input -> Object Segmentation -> Geometric Feature Analysis -> Grasp Strat
 
 
 
-###### **Current Features** 
+###### **Current Features**
 
 * Real-time webcam input using OpenCV
 * Instance segmentation using YOLO
@@ -30,20 +30,24 @@ Camera Input -> Object Segmentation -> Geometric Feature Analysis -> Grasp Strat
 * Object centroid calculation
 * Object dimension and aspect ratio estimation
 * Object orientation estimation
-
-
-
-###### **Planned Features** 
-
 * Rule-based grasp strategy selection
-* Grasp point estimation based on object geometry
-* Visualization of predicted grasp points
-* Support for multiple grasp strategies
-* Grasp planning evaluation on different object shapes
+* Candidate grasp point estimation
+* Grasp line and contact point visualization
+* Support for power, pinch, spherical, and lateral grasp strategies
 
 
 
-###### **Project Structure** 
+###### **Planned Features**
+
+* Improved grasp strategy scoring
+* Additional shape descriptors such as circularity and solidity
+* Grasp quality evaluation
+* More stable predictions across video frames
+* Evaluation on different object shapes
+
+
+
+###### **Project Structure**
 
 main.py — Runs the real-time vision pipeline
 
@@ -53,11 +57,19 @@ vision/detector.py — Performs object segmentation
 
 vision/object\_analyzer.py — Extracts geometric features from segmentation masks
 
+vision/visualizer.py
+
+planning/grasp\_types.py
+
+planning/grasp\_result.py
+
+planning/grasp\_planner.py
+
 tests/ — Contains project tests
 
 
 
-###### **Technologies** 
+###### **Technologies**
 
 Python
 
@@ -71,7 +83,7 @@ NumPy
 
 ###### **Motivation**
 
-Robotic grasping requires more than simply detecting an object. A grasp planning system must analyze the shape, size, and orientation of an object to determine how and where it should be grasped. 
+Robotic grasping requires more than simply detecting an object. A grasp planning system must analyze the shape, size, and orientation of an object to determine how and where it should be grasped.
 
 
 

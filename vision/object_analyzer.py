@@ -13,6 +13,7 @@ class ObjectFeature:
     height: float
     aspect_ratio: float
     orientation: float
+    mask: np.ndarray
 
 class ObjectAnalyzer: 
     def analyze(
@@ -38,6 +39,8 @@ class ObjectAnalyzer:
             raise ValueError("No contour found in mask.")
         contour = max(contours, key=cv2.contourArea)
         area = cv2.contourArea(contour)
+        if area <= 0:
+            raise ValueError("Contour area must be greater than zero.")
         
         moments = cv2.moments(contour)
         if moments["m00"] == 0:
@@ -47,12 +50,21 @@ class ObjectAnalyzer:
         centroid = (center_x, center_y)
         
         #rotated_rect = cv2.minAreaRect(contour)
-        (_, _), (width, height), orientation = cv2.minAreaRect(contour)
-        short_side = min(width, height)
-        long_side = max(width, height)
-        if short_side == 0:
+        (_, _), (rect_width, rect_height), raw_angle = cv2.minAreaRect(contour)
+        if rect_width <= 0 or rect_height <= 0:
             raise ValueError("Invalid object dimensions.")
+        
+        short_side = min(rect_width, rect_height)
+        long_side = max(rect_width, rect_height)
         aspect_ratio = long_side / short_side
+        
+        if rect_width < rect_height:
+            orientation = raw_angle
+        else:
+            orientation = raw_angle + 90.0
+        
+        if orientation >= 90.0:
+            orientation -= 180.0
         
         return ObjectFeature(
             label = label,
@@ -63,5 +75,6 @@ class ObjectAnalyzer:
             height = long_side,
             aspect_ratio = aspect_ratio,
             orientation = orientation,
+            mask = binary_mask,
         )
         
